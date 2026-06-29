@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Crusiva — Websites, Video Editing &amp; AI-Generated Content</title>
+<meta name="description" content="Crusiva builds websites, edits video, and generates AI video &amp; photo content — with clear pricing for every package." />
+<meta name="theme-color" content="#FBF6EC" />
+<meta property="og:title" content="Crusiva" />
+<meta property="og:description" content="Websites, video editing, and AI-generated content — with pricing you can see upfront." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%23FFC53D'/%3E%3Cpolygon points='24,18 48,32 24,46' fill='%23241D14'/%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800;900&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+<noscript><style>.intro{display:none!important;}</style></noscript>
+
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --paper:#FBF6EC;
+  --paper-deep:#F1E7D2;
+  --white:#FFFFFF;
+  --ink:#241D14;
+  --strobe:#FFC53D;
+  --strobe-deep:#A6741A;
+  --smoke:#7C7160;
+  --line:rgba(36,29,20,.14);
+  --radius:14px;
+  --maxw:1200px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --font-display:'Unbounded',sans-serif;
+  --font-body:'Inter',system-ui,-apple-system,sans-serif;
+  --font-mono:'Space Mono',monospace;
+}
+
+/* ============ RESET ============ */
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);line-height:1.5;-webkit-font-smoothing:antialiased;}
+img{max-width:100%;display:block;}
+a{color:inherit;}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
+ul{margin:0;padding:0;}
+textarea{font:inherit;}
+:focus-visible{outline:2px solid var(--strobe-deep);outline-offset:3px;}
+h1,h2,h3{font-family:var(--font-display);margin:0;line-height:1.08;}
+p{margin:0;}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
+.eyebrow{font-family:var(--font-mono);color:var(--strobe-deep);text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;display:inline-block;margin-bottom:14px;}
+
+/* ============ GRAIN ============ */
+.grain{position:fixed;inset:0;pointer-events:none;z-index:5;opacity:.03;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px 180px;}
+
+/* ============ INTRO ============ */
+.intro{position:fixed;inset:0;z-index:999;background:var(--paper);display:flex;align-items:center;justify-content:center;transition:opacity .5s ease,visibility .5s ease;}
+.intro--done{opacity:0;visibility:hidden;pointer-events:none;}
+.intro__inner{display:flex;flex-direction:column;align-items:center;gap:16px;font-family:var(--font-mono);color:var(--smoke);}
+.intro__label{font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;}
+.intro__brand{color:var(--ink);margin-left:8px;font-weight:700;}
+.intro__bar{width:220px;height:3px;background:var(--line);border-radius:2px;overflow:hidden;}
+.intro__fill{height:100%;width:0%;background:var(--strobe);}
+.intro__pct{font-size:.75rem;color:var(--strobe-deep);}
+
+/* ============ HEADER / NAV ============ */
+.site-header{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 0;transition:background .3s ease,padding .3s ease,border-color .3s ease,box-shadow .3s ease;border-bottom:1px solid transparent;}
+.site-header.is-scrolled{background:rgba(251,246,236,.9);backdrop-filter:blur(10px);padding:12px 0;border-bottom:1px solid var(--line);}
+.nav{display:flex;align-items:center;justify-content:space-between;max-width:var(--maxw);margin:0 auto;padding:0 28px;gap:18px;}
+.nav__brand{font-family:var(--font-display);font-weight:800;font-size:1.15rem;text-decoration:none;letter-spacing:-.01em;white-space:nowrap;}
+.nav__brand span{color:var(--strobe-deep);}
+.nav__menu{display:flex;align-items:center;gap:30px;flex:1;}
+.nav__menu a{font-family:var(--font-mono);font-size:.84rem;text-decoration:none;text-transform:uppercase;letter-spacing:.06em;color:var(--smoke);transition:color .2s ease;}
+.nav__menu a:hover{color:var(--ink);}
+.nav__actions{display:flex;align-items:center;gap:16px;}
+.cart-btn{position:relative;font-size:1.3rem;line-height:1;}
+.cart-badge{position:absolute;top:-9px;right:-11px;background:var(--strobe);color:var(--ink);font-family:var(--font-mono);font-size:.62rem;font-weight:700;border-radius:999px;padding:2px 6px;min-width:16px;text-align:center;}
+.signin-btn{font-family:var(--font-mono);font-size:.8rem;color:var(--smoke);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;}
+.signin-btn:hover{color:var(--ink);}
+.user-chip{font-family:var(--font-mono);font-size:.78rem;display:flex;align-items:center;gap:8px;white-space:nowrap;}
+.user-chip__signout{color:var(--smoke);font-size:.7rem;text-decoration:underline;}
+.nav__toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:30px;height:22px;flex-shrink:0;}
+.nav__toggle span{display:block;width:100%;height:2px;background:var(--ink);transition:transform .3s var(--ease),opacity .3s var(--ease);}
+.nav__toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav__toggle[aria-expanded="true"] span:nth-child(2){opacity:0;}
+.nav__toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* ============ BUTTONS ============ */
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--strobe);color:var(--ink);font-family:var(--font-mono);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.82rem;padding:15px 28px;border-radius:999px;text-decoration:none;transition:transform .25s var(--ease),box-shadow .25s var(--ease);}
+.btn:hover{transform:translateY(-3px);box-shadow:0 14px 28px -12px rgba(36,29,20,.35);}
+.btn__arrow{display:inline-block;transition:transform .25s var(--ease);}
+.btn:hover .btn__arrow{transform:translateX(4px);}
+.btn--ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink);}
+.btn--ghost:hover{border-color:var(--strobe-deep);box-shadow:none;}
+.btn--small{padding:10px 20px;font-size:.74rem;}
+.btn--full{width:100%;justify-content:center;}
+
+/* ============ STICKERS ============ */
+.sticker{position:absolute;font-family:var(--font-mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;color:var(--strobe-deep);background:var(--white);border:1px dashed var(--line);padding:7px 13px;border-radius:999px;pointer-events:none;white-space:nowrap;z-index:2;}
+@media (max-width:760px){.sticker{display:none;}}
+
+/* ============ HERO ============ */
+.hero{min-height:96vh;display:flex;flex-direction:column;justify-content:center;padding:140px 0 70px;position:relative;}
+.hero h1{font-size:clamp(2.7rem,8.2vw,5.4rem);font-weight:900;text-transform:uppercase;letter-spacing:-.01em;max-width:14ch;}
+.hero h1 .word{display:inline-block;transition:transform .35s var(--ease),color .35s var(--ease);}
+.hero h1 .word:hover{transform:translateY(-6px) rotate(-2deg);color:var(--strobe-deep);}
+.hero__sub{font-size:1.12rem;color:var(--smoke);max-width:46ch;margin-top:24px;}
+.hero__actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:34px;}
+.hero__email-note{font-family:var(--font-mono);font-size:.78rem;color:var(--smoke);}
+.trust-row{list-style:none;display:flex;gap:26px;flex-wrap:wrap;margin-top:36px;font-family:var(--font-mono);font-size:.76rem;color:var(--smoke);}
+.trust-row li{display:flex;align-items:center;gap:7px;}
+.trust-row li::before{content:'✓';color:var(--strobe-deep);font-weight:700;}
+.hero__scroll{position:absolute;bottom:30px;left:28px;display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;color:var(--smoke);text-transform:uppercase;}
+.hero__scroll-line{width:1px;height:32px;background:var(--line);position:relative;overflow:hidden;}
+.hero__scroll-line::after{content:'';position:absolute;top:0;left:0;width:100%;height:40%;background:var(--strobe);animation:scrollline 1.8s ease-in-out infinite;}
+@keyframes scrollline{0%{top:-40%;}100%{top:100%;}}
+
+/* ============ MARQUEE ============ */
+.marquee{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper-deep);padding:16px 0;}
+.marquee__track{display:flex;width:max-content;animation:scrollleft 24s linear infinite;}
+.marquee:hover .marquee__track{animation-play-state:paused;}
+.marquee__group{display:flex;gap:44px;padding-right:44px;}
+.marquee__item{font-family:var(--font-mono);color:var(--strobe-deep);text-transform:uppercase;letter-spacing:.08em;font-size:.85rem;white-space:nowrap;}
+.marquee__item b{color:var(--smoke);font-weight:400;margin-right:44px;}
+@keyframes scrollleft{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ============ SECTION SHELLS ============ */
+.page{display:none;}
+.page.is-active{display:block;}
+section{padding:104px 0;}
+.section__head{max-width:560px;margin-bottom:56px;}
+.section__head h2{font-size:clamp(1.85rem,4vw,2.6rem);font-weight:800;}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.reveal.is-visible{opacity:1;transform:none;}
+
+/* ============ HOME SERVICES GRID ============ */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;}
+.cat-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:28px;text-align:left;transition:transform .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease);box-shadow:0 1px 2px rgba(36,29,20,.04);}
+.cat-card:hover{transform:translateY(-5px);border-color:var(--strobe);box-shadow:0 16px 32px -16px rgba(36,29,20,.18);}
+.cat-card__icon{font-size:1.8rem;margin-bottom:12px;display:block;}
+.cat-card__name{font-family:var(--font-display);font-weight:700;font-size:1.08rem;margin-bottom:6px;}
+.cat-card__slogan{color:var(--smoke);font-size:.85rem;margin-bottom:16px;}
+.cat-card__from{font-family:var(--font-mono);font-size:.74rem;color:var(--strobe-deep);}
+
+/* ============ SHOWCASE TILES (dark "screens" on the light page) ============ */
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;}
+.tile__frame{position:relative;aspect-ratio:16/9;border-radius:var(--radius);overflow:hidden;
+  background:radial-gradient(circle at var(--glow-x,30%) var(--glow-y,30%),rgba(255,197,61,.22),transparent 60%),linear-gradient(140deg,#2B2318,#1C150E 65%);}
+.tile__frame::before,.tile__frame::after{content:'';position:absolute;left:0;right:0;height:14%;background:#1C150E;}
+.tile__frame::before{top:0;}
+.tile__frame::after{bottom:0;}
+.tile__play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;border:1.5px solid var(--strobe);display:flex;align-items:center;justify-content:center;}
+.tile__play::after{content:'';border-left:14px solid var(--strobe);border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:3px;}
+.tile__cap{position:absolute;bottom:18%;left:18px;font-family:var(--font-mono);font-size:.72rem;color:var(--paper);letter-spacing:.04em;}
+.tile__concept{position:absolute;bottom:18%;right:18px;font-family:var(--font-mono);font-size:.64rem;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.06em;}
+.tile__title{margin-top:16px;font-size:1rem;font-weight:600;}
+
+/* ============ PROCESS / TIMELINE ============ */
+.timeline{margin-bottom:46px;}
+.timeline__track{position:relative;height:4px;background:var(--line);border-radius:2px;margin:0 10px 38px;}
+.timeline__fill{position:absolute;top:0;left:0;height:100%;width:0%;background:var(--strobe);border-radius:2px;transition:width .5s var(--ease);}
+.timeline__playhead{position:absolute;top:50%;left:0%;width:14px;height:14px;border-radius:50%;background:var(--strobe);border:3px solid var(--paper);transform:translate(-50%,-50%);transition:left .5s var(--ease);box-shadow:0 0 0 5px rgba(255,197,61,.28);}
+.timeline__steps{display:flex;justify-content:space-between;gap:6px;}
+.timeline__step{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;border-radius:10px;color:var(--smoke);transition:color .25s ease;}
+.timeline__step:hover,.timeline__step.is-active{color:var(--ink);}
+.timeline__num{font-family:var(--font-mono);font-size:.72rem;color:var(--strobe-deep);}
+.timeline__label{font-family:var(--font-mono);font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;text-align:center;}
+.timeline__panel{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:34px;min-height:130px;box-shadow:0 1px 2px rgba(36,29,20,.04);}
+.timeline__panel h3{font-size:1.35rem;font-weight:700;margin-bottom:10px;}
+.timeline__panel p{color:var(--smoke);max-width:56ch;}
+
+/* ============ CONTACT ============ */
+.contact__grid{display:grid;grid-template-columns:1.1fr 1fr;gap:54px;align-items:start;}
+.contact h2{font-size:clamp(2rem,5vw,3rem);font-weight:800;margin-bottom:18px;}
+.contact p{color:var(--smoke);max-width:46ch;margin-bottom:28px;}
+.checklist-box{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:30px;box-shadow:0 1px 2px rgba(36,29,20,.04);}
+.checklist-box__label{font-family:var(--font-mono);font-size:.72rem;color:var(--strobe-deep);text-transform:uppercase;letter-spacing:.1em;margin-bottom:18px;display:block;}
+.checklist{list-style:none;display:flex;flex-direction:column;gap:16px;font-family:var(--font-mono);font-size:.86rem;color:var(--smoke);}
+.checklist li{display:flex;align-items:flex-start;gap:12px;}
+.checklist__box{flex-shrink:0;margin-top:2px;width:13px;height:13px;border:1.5px solid var(--strobe-deep);border-radius:3px;}
+
+/* ============ CATEGORY PAGE ============ */
+#page-category,#page-cart{position:relative;min-height:100vh;padding-top:120px;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:.8rem;color:var(--smoke);margin-bottom:30px;text-decoration:none;}
+.back-btn:hover{color:var(--strobe-deep);}
+.cat-header{max-width:640px;margin-bottom:42px;}
+.cat-header__icon{font-size:2.1rem;display:block;margin-bottom:8px;}
+.cat-header h1{font-size:clamp(1.9rem,4.6vw,2.9rem);margin-bottom:10px;}
+.cat-header__slogan{font-family:var(--font-display);color:var(--strobe-deep);font-size:1.08rem;font-weight:700;margin-bottom:14px;}
+.cat-header__blurb{color:var(--smoke);max-width:54ch;}
+
+.qualifier{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:24px;margin-bottom:40px;box-shadow:0 1px 2px rgba(36,29,20,.04);}
+.qualifier__label{font-family:var(--font-mono);font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--strobe-deep);margin-bottom:14px;display:block;}
+.qualifier__options{display:flex;gap:10px;flex-wrap:wrap;}
+.qualifier__option{background:var(--paper-deep);border:1px solid var(--line);border-radius:999px;padding:10px 18px;font-family:var(--font-mono);font-size:.82rem;color:var(--ink);transition:border-color .2s,background .2s;}
+.qualifier__option:hover{border-color:var(--strobe-deep);}
+.qualifier__option.is-active{background:var(--strobe);border-color:var(--strobe);color:var(--ink);font-weight:700;}
+
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:24px;}
+.pricing-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:32px;display:flex;flex-direction:column;position:relative;box-shadow:0 1px 2px rgba(36,29,20,.04);transition:transform .3s var(--ease),box-shadow .3s var(--ease),border-color .3s var(--ease);}
+.pricing-card:hover{transform:translateY(-4px);box-shadow:0 18px 36px -16px rgba(36,29,20,.2);}
+.pricing-card.is-popular{border-color:var(--strobe);}
+.pricing-card.is-highlighted{box-shadow:0 0 0 3px rgba(255,197,61,.5);}
+.pricing-card__badge{position:absolute;top:-13px;right:24px;background:var(--strobe);color:var(--ink);font-family:var(--font-mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;padding:6px 12px;border-radius:999px;font-weight:700;}
+.pricing-card__icon{font-size:1.5rem;}
+.pricing-card__name{font-family:var(--font-display);font-size:1.2rem;font-weight:700;margin:10px 0 4px;}
+.pricing-card__tagline{color:var(--smoke);font-size:.86rem;margin-bottom:16px;}
+.pricing-card__price{font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--ink);margin-bottom:6px;}
+.pricing-card__strike{text-decoration:line-through;color:var(--smoke);font-size:1rem;margin-right:8px;font-weight:600;}
+.pricing-card__save{display:inline-block;background:var(--paper-deep);color:var(--strobe-deep);font-family:var(--font-mono);font-size:.68rem;padding:4px 10px;border-radius:999px;margin-bottom:14px;}
+.pricing-card__features{list-style:none;display:flex;flex-direction:column;gap:9px;margin:14px 0 16px;flex:1;}
+.pricing-card__features li{display:flex;gap:8px;font-size:.86rem;color:var(--ink);}
+.pricing-card__features li::before{content:'✓';color:var(--strobe-deep);font-weight:700;flex-shrink:0;}
+.pricing-card__note{font-size:.78rem;color:var(--smoke);font-style:italic;margin-bottom:18px;}
+.pricing-card__cta{margin-top:auto;}
+.bundle-wrap{margin-top:30px;}
+
+/* ============ CART PAGE ============ */
+.cart-list{display:flex;flex-direction:column;gap:14px;margin-bottom:30px;}
+.cart-row{display:flex;justify-content:space-between;align-items:center;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:16px 18px;gap:12px;flex-wrap:wrap;}
+.cart-row__info{display:flex;flex-direction:column;gap:3px;}
+.cart-row__name{font-weight:600;}
+.cart-row__meta{font-family:var(--font-mono);font-size:.72rem;color:var(--smoke);}
+.cart-row__right{display:flex;align-items:center;gap:16px;}
+.cart-row__price{font-family:var(--font-mono);font-weight:700;}
+.cart-row__remove{color:var(--smoke);font-size:1.2rem;line-height:1;}
+.cart-row__remove:hover{color:var(--strobe-deep);}
+.cart-empty{color:var(--smoke);font-family:var(--font-mono);padding:50px 0;text-align:center;}
+.cart-total{display:flex;justify-content:space-between;align-items:center;font-family:var(--font-display);font-size:1.4rem;font-weight:800;padding:20px 0;border-top:1px solid var(--line);margin-bottom:30px;}
+.cart-form{display:flex;flex-direction:column;gap:16px;max-width:480px;margin-bottom:28px;}
+.cart-form-field label{font-family:var(--font-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--smoke);display:block;margin-bottom:6px;}
+.cart-form-field input,.cart-form-field textarea{width:100%;font-family:var(--font-body);font-size:.92rem;padding:13px 16px;border:1px solid var(--line);border-radius:10px;background:var(--white);color:var(--ink);}
+.cart-form-field input:focus,.cart-form-field textarea:focus{border-color:var(--strobe);outline:none;}
+
+/* ============ CHAT WIDGET ============ */
+.chat-toggle{position:fixed;bottom:26px;right:26px;width:58px;height:58px;border-radius:50%;background:var(--strobe);color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 14px 28px -12px rgba(36,29,20,.4);z-index:300;transition:transform .25s var(--ease);}
+.chat-toggle:hover{transform:scale(1.06);}
+.chat-panel{position:fixed;bottom:96px;right:26px;width:340px;max-height:480px;background:var(--white);border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 48px -20px rgba(36,29,20,.35);display:flex;flex-direction:column;z-index:300;transform:translateY(16px) scale(.97);opacity:0;pointer-events:none;transition:transform .25s var(--ease),opacity .25s var(--ease);}
+.chat-panel.is-open{transform:none;opacity:1;pointer-events:auto;}
+.chat-panel__head{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid var(--line);}
+.chat-panel__title{font-family:var(--font-display);font-weight:700;font-size:.98rem;}
+.chat-panel__sub{font-family:var(--font-mono);font-size:.68rem;color:var(--smoke);}
+.chat-panel__close{color:var(--smoke);font-size:1.1rem;}
+.chat-log{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:10px;max-height:230px;}
+.chat-msg{max-width:85%;font-size:.84rem;padding:10px 14px;border-radius:14px;line-height:1.4;}
+.chat-msg--bot{background:var(--paper-deep);color:var(--ink);align-self:flex-start;border-bottom-left-radius:4px;}
+.chat-msg--user{background:var(--strobe);color:var(--ink);align-self:flex-end;border-bottom-right-radius:4px;}
+.chat-chips{display:flex;flex-wrap:wrap;gap:8px;padding:0 18px 12px;}
+.chat-chip{background:var(--paper-deep);border:1px solid var(--line);border-radius:999px;padding:7px 12px;font-size:.72rem;color:var(--ink);}
+.chat-chip:hover{border-color:var(--strobe-deep);}
+.chat-input-row{display:flex;gap:8px;padding:14px 16px;border-top:1px solid var(--line);}
+.chat-input-row input{flex:1;border:1px solid var(--line);border-radius:999px;padding:10px 16px;font-family:var(--font-body);font-size:.84rem;background:var(--paper-deep);color:var(--ink);}
+.chat-input-row input:focus{outline:none;border-color:var(--strobe-deep);}
+.chat-send{background:var(--strobe);color:var(--ink);width:38px;height:38px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.95rem;}
+.chat-email-link{display:block;text-align:center;font-family:var(--font-mono);font-size:.7rem;color:var(--strobe-deep);padding:10px;border-top:1px solid var(--line);text-decoration:none;}
+.chat-email-link:hover{text-decoration:underline;}
+
+/* ============ LOGIN MODAL ============ */
+.modal-overlay{position:fixed;inset:0;background:rgba(36,29,20,.45);display:flex;align-items:center;justify-content:center;z-index:400;opacity:0;pointer-events:none;transition:opacity .25s ease;padding:20px;}
+.modal-overlay.is-open{opacity:1;pointer-events:auto;}
+.modal{background:var(--paper);border-radius:18px;padding:36px;width:100%;max-width:380px;position:relative;transform:translateY(10px);transition:transform .25s var(--ease);}
+.modal-overlay.is-open .modal{transform:none;}
+.modal__close{position:absolute;top:18px;right:18px;color:var(--smoke);font-size:1.2rem;}
+.modal h2{font-family:var(--font-display);font-size:1.35rem;margin-bottom:8px;}
+.modal p{color:var(--smoke);font-size:.84rem;margin-bottom:22px;}
+.modal-field{margin-bottom:16px;}
+.modal-field label{font-family:var(--font-mono);font-size:.7rem;text-transform:uppercase;color:var(--smoke);display:block;margin-bottom:6px;}
+.modal-field input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font-family:var(--font-body);background:var(--white);color:var(--ink);}
+.modal-field input:focus{outline:none;border-color:var(--strobe);}
+.modal__note{font-size:.72rem;color:var(--smoke);margin-top:14px;}
+
+/* ============ TOAST ============ */
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--paper);padding:14px 22px;border-radius:999px;font-family:var(--font-mono);font-size:.8rem;opacity:0;pointer-events:none;transition:opacity .3s ease,transform .3s ease;z-index:500;}
+.toast.is-visible{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast strong{color:var(--strobe);}
+
+/* ============ FOOTER ============ */
+.site-footer{border-top:1px solid var(--line);padding:36px 0;}
+.site-footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+.site-footer__brand{font-family:var(--font-display);font-weight:800;}
+.site-footer__brand span{color:var(--strobe-deep);}
+.site-footer__meta{font-family:var(--font-mono);font-size:.75rem;color:var(--smoke);display:flex;gap:18px;flex-wrap:wrap;}
+.site-footer__meta a{text-decoration:none;color:var(--smoke);}
+.site-footer__meta a:hover{color:var(--strobe-deep);}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:900px){
+  .cards,.tiles,.contact__grid{grid-template-columns:1fr;}
+}
+@media (max-width:760px){
+  .nav__toggle{display:flex;}
+  .nav__menu{position:fixed;top:0;right:0;height:100vh;width:78vw;max-width:320px;background:var(--paper);border-left:1px solid var(--line);
+    flex-direction:column;justify-content:center;align-items:flex-start;gap:26px;padding:0 36px;transform:translateX(100%);transition:transform .35s var(--ease);}
+  .nav__menu.is-open{transform:translateX(0);}
+  .timeline__steps{overflow-x:auto;}
+  .timeline__label{font-size:.66rem;}
+  section{padding:76px 0;}
+  .chat-panel{width:88vw;right:6vw;bottom:90px;}
+  .chat-toggle{right:20px;bottom:20px;}
+}
+@media (max-width:480px){
+  .wrap,.nav{padding:0 20px;}
+  .hero{padding-top:118px;}
+  #page-category,#page-cart{padding-top:108px;}
+}
+
+/* ============ REDUCED MOTION ============ */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  .marquee__track,.hero__scroll-line::after{animation:none!important;}
+  .reveal{opacity:1!important;transform:none!important;transition:none!important;}
+  .intro{display:none!important;}
+  *{transition-duration:.001ms!important;}
+}
+</style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro__inner">
+    <span class="intro__label">RENDERING<span class="intro__brand">Crusiva</span></span>
+    <div class="intro__bar"><div class="intro__fill" id="introFill"></div></div>
+    <span class="intro__pct" id="introPct">0%</span>
+  </div>
+</div>
+
+<header class="site-header" id="siteHeader">
+  <div class="nav">
+    <a class="nav__brand" href="#home" data-nav="home">Crus<span>iva</span></a>
+    <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navMenu"><span></span><span></span><span></span></button>
+    <nav class="nav__menu" id="navMenu">
+      <a href="#services" data-anchor="services">Services</a>
+      <a href="#work" data-anchor="work">Work</a>
+      <a href="#process" data-anchor="process">Process</a>
+      <a href="#contact" data-anchor="contact">Contact</a>
+    </nav>
+    <div class="nav__actions">
+      <button class="cart-btn" id="cartButton" aria-label="View cart">🛒<span class="cart-badge" id="cartBadge" hidden>0</span></button>
+      <button class="signin-btn" id="signInButton">Sign in</button>
+      <div class="user-chip" id="userChip" hidden><span id="userChipName"></span><button class="user-chip__signout" id="signOutButton">Sign out</button></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ HOME PAGE ============ -->
+  <section class="page is-active" id="page-home">
+
+    <section class="hero" id="top">
+      <span class="sticker sticker--1" style="top:14%;right:6%;transform:rotate(7deg);" aria-hidden="true">▸▸ HD EXPORT</span>
+      <span class="sticker sticker--2" style="bottom:18%;left:3%;transform:rotate(-6deg);" aria-hidden="true">★ MADE TO ORDER</span>
+      <div class="wrap">
+        <span class="eyebrow">Web &middot; Video &middot; AI-Generated Content</span>
+        <h1><span class="word">MAKE</span> <span class="word">SOMETHING</span> <span class="word">MOVE.</span></h1>
+        <p class="hero__sub">Crusiva builds websites, edits your raw footage, and generates AI video &amp; photo content — all cut for one job: getting watched, not scrolled past.</p>
+        <div class="hero__actions">
+          <a class="btn" href="#services" data-anchor="services">See pricing <span class="btn__arrow">→</span></a>
+          <a class="btn btn--ghost" href="mailto:rishavchauhan1912@gmail.com?subject=New%20project%20with%20Crusiva">Email us directly</a>
+        </div>
+        <ul class="trust-row">
+          <li>Clear pricing, every time</li>
+          <li>HD export on every order</li>
+          <li>Built around your brief</li>
+        </ul>
+      </div>
+      <div class="hero__scroll" aria-hidden="true"><div class="hero__scroll-line"></div>SCROLL</div>
+    </section>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <div class="marquee__group">
+          <span class="marquee__item">Website Builds</span>
+          <span class="marquee__item"><b>▸▸</b>Video Editing</span>
+          <span class="marquee__item"><b>▸▸</b>Thumbnails</span>
+          <span class="marquee__item"><b>▸▸</b>AI-Generated Video</span>
+          <span class="marquee__item"><b>▸▸</b>AI-Generated Photo</span>
+          <span class="marquee__item"><b>▸▸</b>Funny Moments Cuts</span>
+          <span class="marquee__item"><b>▸▸</b></span>
+        </div>
+        <div class="marquee__group">
+          <span class="marquee__item">Website Builds</span>
+          <span class="marquee__item"><b>▸▸</b>Video Editing</span>
+          <span class="marquee__item"><b>▸▸</b>Thumbnails</span>
+          <span class="marquee__item"><b>▸▸</b>AI-Generated Video</span>
+          <span class="marquee__item"><b>▸▸</b>AI-Generated Photo</span>
+          <span class="marquee__item"><b>▸▸</b>Funny Moments Cuts</span>
+          <span class="marquee__item"><b>▸▸</b></span>
+        </div>
+      </div>
+    </div>
+
+    <section id="services">
+      <div class="wrap">
+        <div class="section__head reveal">
+          <span class="eyebrow">Services</span>
+          <h2>Pick a service, see the price.</h2>
+        </div>
+        <div class="cat-grid" id="catGrid"></div>
+      </div>
+    </section>
+
+    <section id="work">
+      <div class="wrap">
+        <div class="section__head reveal">
+          <span class="eyebrow">Sample Frames</span>
+          <h2>A taste of what comes out the other end.</h2>
+        </div>
+        <div class="tiles">
+          <div class="reveal">
+            <div class="tile__frame" style="--glow-x:25%;--glow-y:25%;"><div class="tile__play"></div><span class="tile__cap">AI-GENERATED VIDEO</span><span class="tile__concept">Concept preview</span></div>
+            <p class="tile__title">Product launch concept, fully AI-generated</p>
+          </div>
+          <div class="reveal">
+            <div class="tile__frame" style="--glow-x:75%;--glow-y:30%;"><div class="tile__play"></div><span class="tile__cap">HIGHLIGHT REEL</span><span class="tile__concept">Concept preview</span></div>
+            <p class="tile__title">Funny moments cut, built for sharing</p>
+          </div>
+          <div class="reveal">
+            <div class="tile__frame" style="--glow-x:30%;--glow-y:75%;"><div class="tile__play"></div><span class="tile__cap">WEBSITE BUILD</span><span class="tile__concept">Concept preview</span></div>
+            <p class="tile__title">Local business site, live in days not months</p>
+          </div>
+          <div class="reveal">
+            <div class="tile__frame" style="--glow-x:70%;--glow-y:70%;"><div class="tile__play"></div><span class="tile__cap">AI-GENERATED PHOTO</span><span class="tile__concept">Concept preview</span></div>
+            <p class="tile__title">Brand mood board, generated from a single brief</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="process">
+      <div class="wrap">
+        <div class="section__head reveal">
+          <span class="eyebrow">Process</span>
+          <h2>From brief to delivered, on one timeline.</h2>
+        </div>
+        <div class="timeline reveal" role="group" aria-label="Project process steps">
+          <div class="timeline__track">
+            <div class="timeline__fill" id="timelineFill"></div>
+            <div class="timeline__playhead" id="timelinePlayhead" aria-hidden="true"></div>
+          </div>
+          <div class="timeline__steps">
+            <button type="button" class="timeline__step is-active" data-title="Brief" data-desc="Tell us the goal, the vibe, and the deadline — for a site, an edit, or AI-generated content." aria-pressed="true"><span class="timeline__num">01</span><span class="timeline__label">Brief</span></button>
+            <button type="button" class="timeline__step" data-title="Capture / Generate" data-desc="We work with your raw footage and photos, or generate AI video and AI photo content from scratch." aria-pressed="false"><span class="timeline__num">02</span><span class="timeline__label">Capture / Generate</span></button>
+            <button type="button" class="timeline__step" data-title="Cut" data-desc="We edit, pace, and polish until it holds attention instead of losing it." aria-pressed="false"><span class="timeline__num">03</span><span class="timeline__label">Cut</span></button>
+            <button type="button" class="timeline__step" data-title="Deliver" data-desc="You get final files ready to publish — the site goes live, the video gets exported." aria-pressed="false"><span class="timeline__num">04</span><span class="timeline__label">Deliver</span></button>
+          </div>
+        </div>
+        <div class="timeline__panel reveal" aria-live="polite">
+          <h3 id="timelinePanelTitle">Brief</h3>
+          <p id="timelinePanelDesc">Tell us the goal, the vibe, and the deadline — for a site, an edit, or AI-generated content.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap">
+        <div class="contact__grid">
+          <div class="reveal">
+            <span class="eyebrow">Contact</span>
+            <h2>Let's make something.</h2>
+            <p>Browse a service to see exact pricing and add it to your order, or just email us what you have in mind.</p>
+            <a class="btn" href="mailto:rishavchauhan1912@gmail.com?subject=New%20project%20enquiry">Email rishavchauhan1912@gmail.com <span class="btn__arrow">→</span></a>
+          </div>
+          <div class="checklist-box reveal">
+            <span class="checklist-box__label">Helpful to include</span>
+            <ul class="checklist">
+              <li><span class="checklist__box"></span> Which service — editing, thumbnail, website, or AI-generated content</li>
+              <li><span class="checklist__box"></span> Rough timeline or deadline</li>
+              <li><span class="checklist__box"></span> Any reference links, footage, or photos you already have</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </section>
+
+  <!-- ============ CATEGORY PAGE (rendered by JS) ============ -->
+  <section class="page" id="page-category">
+    <div class="wrap">
+      <a href="#home" class="back-btn" data-nav="home">← Back to home</a>
+      <div class="cat-header">
+        <span class="cat-header__icon" id="catIcon"></span>
+        <h1 id="catName"></h1>
+        <p class="cat-header__slogan" id="catSlogan"></p>
+        <p class="cat-header__blurb" id="catBlurb"></p>
+      </div>
+      <div class="qualifier" id="catQualifier" hidden>
+        <span class="qualifier__label" id="catQualifierLabel"></span>
+        <div class="qualifier__options" id="catQualifierOptions"></div>
+      </div>
+      <div class="pricing-grid" id="catTiers"></div>
+      <div class="bundle-wrap" id="catBundleWrap"></div>
+    </div>
+  </section>
+
+  <!-- ============ CART PAGE ============ -->
+  <section class="page" id="page-cart">
+    <div class="wrap">
+      <a href="#home" class="back-btn" data-nav="home">← Continue browsing</a>
+      <div class="section__head">
+        <span class="eyebrow">Your Order</span>
+        <h2>What you're getting.</h2>
+      </div>
+      <div id="cartItemsWrap"></div>
+      <div class="cart-total" id="cartTotalRow" hidden><span>Total</span><span id="cartTotalAmount"></span></div>
+      <div class="cart-form" id="cartFormWrap" hidden>
+        <div class="cart-form-field"><label for="custName">Your name</label><input id="custName" type="text" placeholder="Full name" /></div>
+        <div class="cart-form-field"><label for="custContact">Email or phone</label><input id="custContact" type="text" placeholder="you@email.com" /></div>
+        <div class="cart-form-field"><label for="custNotes">Anything else we should know?</label><textarea id="custNotes" rows="3" placeholder="Deadline, references, links to your footage..."></textarea></div>
+      </div>
+      <div class="hero__actions" id="cartActions" hidden>
+        <button class="btn" id="sendOrderBtn">Send order request <span class="btn__arrow">→</span></button>
+        <button class="btn btn--ghost" id="clearCartBtn">Clear cart</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ CHAT WIDGET ============ -->
+<button class="chat-toggle" id="chatToggle" aria-label="Open chat">💬</button>
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-panel__head">
+    <div><div class="chat-panel__title">Chat with Crusiva</div><div class="chat-panel__sub">Usually replies by email</div></div>
+    <button class="chat-panel__close" id="chatClose" aria-label="Close chat">✕</button>
+  </div>
+  <div class="chat-log" id="chatLog" aria-live="polite"></div>
+  <div class="chat-chips" id="chatChips"></div>
+  <div class="chat-input-row">
+    <input type="text" id="chatInput" placeholder="Ask a question..." />
+    <button class="chat-send" id="chatSend" aria-label="Send">➤</button>
+  </div>
+  <a class="chat-email-link" id="chatEmailLink" href="#">✉️ Email this conversation to Crusiva</a>
+</div>
+
+<!-- ============ LOGIN MODAL ============ -->
+<div class="modal-overlay" id="loginOverlay">
+  <div class="modal">
+    <button class="modal__close" id="loginClose" aria-label="Close">✕</button>
+    <h2>Quick sign in</h2>
+    <p>Just your name and contact — so we can prefill your order request. No password needed.</p>
+    <div class="modal-field"><label for="loginName">Name</label><input id="loginName" type="text" placeholder="Your name" /></div>
+    <div class="modal-field"><label for="loginEmail">Email or phone</label><input id="loginEmail" type="text" placeholder="you@email.com" /></div>
+    <button class="btn btn--full" id="loginSubmit">Continue</button>
+    <p class="modal__note">This just personalizes your visit — it does not create a saved account.</p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span class="site-footer__brand">Crus<span>iva</span></span>
+    <div class="site-footer__meta">
+      <a href="mailto:rishavchauhan1912@gmail.com">rishavchauhan1912@gmail.com</a>
+      <span>&copy; <span id="year"></span> Crusiva. Built to move.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   CATALOG — single source of truth for every service & price
+   ============================================================ */
+var CATALOG = [
+  {
+    slug:"editing", icon:"🎬", name:"Video Editing",
+    slogan:"Raw clips in. Scroll-stopping cuts out.",
+    blurb:"Footage does not edit itself. We trim the dead air, sync the audio, and pace every cut so people actually stick around to the end.",
+    qualifier:null,
+    tiers:[
+      { name:"Basic Edit", price:399, badge:null, tagline:"Clean, professional edits for everyday content.",
+        features:["Clean cuts & trimming","Background music","Basic captions","Audio sync","HD export"],
+        note:"Perfect for simple and budget-friendly content." },
+      { name:"Advanced Edit", price:699, badge:"⭐ Most Popular", tagline:"High-retention edits designed to keep viewers watching.",
+        features:["Everything in Basic","Animated captions","Sound effects","Smooth transitions","Zoom in/out effects","Emojis & visual pop-ups","Retention-based editing","HD export"],
+        note:"Perfect for viral shorts, gaming clips, funny videos, and creator content." }
+    ]
+  },
+  {
+    slug:"thumbnails", icon:"🖼️", name:"Thumbnails",
+    slogan:"The click happens before the play button.",
+    blurb:"A great edit still needs someone to press play first. These are built to win the click.",
+    qualifier:null,
+    tiers:[
+      { name:"Basic Thumbnail", price:149, badge:null, tagline:"Simple, clean thumbnails that do the job.",
+        features:["Text added","Basic background cleanup","Color & brightness adjustments","HD export"],
+        note:"Perfect for simple YouTube videos." },
+      { name:"Advanced Thumbnail", price:299, badge:"🔥 Most Popular", tagline:"Designed to win the click.",
+        features:["Everything in Basic","Eye-catching text design","Subject cutout","Glow & shadow effects","Custom elements & graphics","Better click-through design","HD export"],
+        note:"Perfect for gaming, reaction, commentary, and viral-style content." }
+    ],
+    bundle:{ name:"Advanced Edit + Advanced Thumbnail", price:899, originalPrice:998, save:99,
+      includes:["1 Advanced Edit","1 Advanced Thumbnail"], note:"One short, one thumbnail, one less thing to think about." }
+  },
+  {
+    slug:"website", icon:"🌐", name:"Website Building",
+    slogan:"A site that loads fast and looks faster.",
+    blurb:"Built around what your business actually does — not a template with your logo dropped on top.",
+    qualifier:{ label:"How many pages do you need?", options:["1 page","2–4 pages","5–7 pages","8–10 pages"] },
+    tiers:[
+      { name:"1 Page", price:2199, badge:null, tagline:"Everything a simple, focused site needs.",
+        features:["Mobile responsive","Modern design","Contact form","Basic SEO setup","Fast loading"],
+        note:"Perfect for a single focused page — portfolio, landing page, or intro site." },
+      { name:"2–4 Pages", price:4499, badge:"⭐ Most Popular", tagline:"Room to tell the full story.",
+        features:["Everything in 1 Page","Multiple pages","Contact form","Basic animations","Mobile responsive","Basic SEO setup"],
+        note:"Perfect for most small businesses — home, about, services, contact." },
+      { name:"5–7 Pages", price:7999, badge:null, tagline:"More structure, more custom design.",
+        features:["Everything in previous plan","More custom design","Multiple sections & pages","Forms & integrations","Speed optimization"],
+        note:"Perfect for growing businesses with more to show." },
+      { name:"8–10 Pages", price:11999, badge:"👑 Full Setup", tagline:"A full, fully custom site.",
+        features:["Everything in previous plan","Advanced layouts","More customization","Priority support","Full website setup"],
+        note:"Perfect for a complete, all-in site with room to grow." }
+    ]
+  },
+  {
+    slug:"ai-image", icon:"🎨", name:"AI-Generated Photo",
+    slogan:"Pixels, on demand.",
+    blurb:"No camera, no studio, no problem — just a clear brief and a brand that needs a picture.",
+    qualifier:null,
+    tiers:[
+      { name:"Basic AI Image", price:59, badge:null, tagline:"A quick, clean AI image.",
+        features:["1 AI-generated image","Standard quality","HD export"],
+        note:"Perfect for profile pictures, wallpapers, and simple designs." },
+      { name:"Advanced AI Image", price:179, badge:"✨ Most Popular", tagline:"More options, better prompts.",
+        features:["Up to 3 AI-generated variations","Better prompt creation","HD export","Minor adjustments"],
+        note:"Perfect for thumbnails, social media posts, and creative projects." },
+      { name:"Premium AI Image", price:399, badge:null, tagline:"Brand-ready, commercial-ready.",
+        features:["Up to 5 AI-generated variations","Detailed prompt engineering","Multiple adjustments","HD export","Commercial use ready"],
+        note:"Perfect for brands, content creators, and marketing content." }
+    ]
+  },
+  {
+    slug:"ai-video", icon:"🚀", name:"AI-Generated Video",
+    slogan:"Type it. Watch it move.",
+    blurb:"Need motion but do not have footage? We generate it — scripted, styled, and exported ready to post.",
+    qualifier:{ label:"How long do you need?", options:["10–20 sec","30–40 sec","1–2 min"] },
+    tiers:[
+      { name:"AI Short (10–20s)", price:159, badge:null, tagline:"Quick motion for quick scrolls.",
+        features:["AI video generation","HD export","Basic prompt creation","1 revision"],
+        note:"Perfect for quick social media content." },
+      { name:"AI Short (30–40s)", price:279, badge:"⭐ Most Popular", tagline:"Built for Reels, Shorts, and TikToks.",
+        features:["AI video generation","Better prompt creation","HD export","Background music","1 revision"],
+        note:"Perfect for Reels, Shorts, and TikToks." },
+      { name:"AI Video (1–2 min)", price:649, badge:"🔥 Best Value", tagline:"Enough time to actually tell a story.",
+        features:["AI video generation","Detailed prompt creation","HD export","Background music","Multiple scenes","2 revisions"],
+        note:"Perfect for storytelling, ads, promotional content, and AI content creators." }
+    ]
+  },
+  {
+    slug:"funny", icon:"😂", name:"Funny Moments",
+    slogan:"The clip your group chat reposts.",
+    blurb:"We dig through your raw footage for the moments worth keeping — and cut them so they actually land.",
+    qualifier:{ label:"What length fits your content?", options:["Short clip","Premium short","Long-form (3–8 min)"] },
+    tiers:[
+      { name:"Funny Moments Short", price:499, badge:null, tagline:"Clean, fast, shareable.",
+        features:["Clip compilation","Basic captions","Sound effects","Background music","HD export"],
+        note:"Perfect for YouTube Shorts, Reels, and TikTok." },
+      { name:"Premium Funny Moments Short", price:799, badge:"🔥 Most Popular", tagline:"Built to get the replay.",
+        features:["Everything in Basic","Animated captions","Better sound effects","Smooth transitions","Zoom effects","Emojis & visual pop-ups","HD export"],
+        note:"Perfect for viral shorts, gaming clips, and highly engaging content." },
+      { name:"Long-Form Funny Moments (3–8 min)", price:1499, badge:null, tagline:"A full compilation, properly cut.",
+        features:["Multiple clips combined","Captions & effects","Sound effects","Smooth transitions","Background music","HD export"],
+        note:"Perfect for YouTube compilations, gaming videos, and funny moments content." }
+    ]
+  }
+];
+
+var cart = [];
+var currentUser = null;
+
+function fmt(n){ return "₹" + n.toLocaleString("en-IN"); }
+
+function el(tag, opts, children){
+  opts = opts || {}; children = children || [];
+  var node = document.createElement(tag);
+  if(opts.class) node.className = opts.class;
+  if(opts.text) node.textContent = opts.text;
+  if(opts.attrs){ for(var k in opts.attrs){ node.setAttribute(k, opts.attrs[k]); } }
+  if(opts.on){ for(var evt in opts.on){ node.addEventListener(evt, opts.on[evt]); } }
+  children.forEach(function(c){ if(c) node.appendChild(c); });
+  return node;
+}
+
+/* ---------------- ROUTING ---------------- */
+function showPage(name){
+  document.querySelectorAll(".page").forEach(function(p){ p.classList.remove("is-active"); });
+  document.getElementById("page-" + name).classList.add("is-active");
+  window.scrollTo(0,0);
+  closeMobileMenu();
+}
+function goAnchor(id){
+  showPage("home");
+  location.hash = id;
+  setTimeout(function(){
+    var t = document.getElementById(id);
+    if(t) t.scrollIntoView({ behavior:"smooth" });
+  }, 30);
+}
+function openCategory(slug){
+  var cat = CATALOG.filter(function(c){ return c.slug === slug; })[0];
+  if(!cat) return;
+  renderCategory(cat);
+  showPage("category");
+  location.hash = slug;
+}
+
+function renderCategory(cat){
+  document.getElementById("catIcon").textContent = cat.icon;
+  document.getElementById("catName").textContent = cat.name;
+  document.getElementById("catSlogan").textContent = cat.slogan;
+  document.getElementById("catBlurb").textContent = cat.blurb;
+
+  var qWrap = document.getElementById("catQualifier");
+  var qOpts = document.getElementById("catQualifierOptions");
+  qOpts.innerHTML = "";
+  if(cat.qualifier){
+    qWrap.hidden = false;
+    document.getElementById("catQualifierLabel").textContent = cat.qualifier.label;
+    cat.qualifier.options.forEach(function(opt, idx){
+      var b = el("button", { class:"qualifier__option", text:opt, attrs:{type:"button"},
+        on:{ click:function(){
+          qOpts.querySelectorAll(".qualifier__option").forEach(function(o){ o.classList.remove("is-active"); });
+          b.classList.add("is-active");
+          var cards = document.querySelectorAll("#catTiers .pricing-card");
+          cards.forEach(function(c){ c.classList.remove("is-highlighted"); });
+          if(cards[idx]){
+            cards[idx].classList.add("is-highlighted");
+            cards[idx].scrollIntoView({ behavior:"smooth", block:"center" });
+          }
+        } } });
+      qOpts.appendChild(b);
+    });
+  } else {
+    qWrap.hidden = true;
+  }
+
+  var tiersWrap = document.getElementById("catTiers");
+  tiersWrap.innerHTML = "";
+  cat.tiers.forEach(function(tier){
+    tiersWrap.appendChild(buildPricingCard(cat, tier));
+  });
+
+  var bundleWrap = document.getElementById("catBundleWrap");
+  bundleWrap.innerHTML = "";
+  if(cat.bundle){
+    bundleWrap.appendChild(buildBundleCard(cat, cat.bundle));
+  }
+}
+
+function buildPricingCard(cat, tier){
+  var card = el("div", { class:"pricing-card" + (tier.badge ? " is-popular" : "") });
+  if(tier.badge) card.appendChild(el("span", { class:"pricing-card__badge", text:tier.badge }));
+  card.appendChild(el("span", { class:"pricing-card__icon", text:cat.icon }));
+  card.appendChild(el("h3", { class:"pricing-card__name", text:tier.name }));
+  card.appendChild(el("p", { class:"pricing-card__tagline", text:tier.tagline }));
+  card.appendChild(el("div", { class:"pricing-card__price", text:fmt(tier.price) }));
+  var feat = el("ul", { class:"pricing-card__features" });
+  tier.features.forEach(function(f){ feat.appendChild(el("li", { text:f })); });
+  card.appendChild(feat);
+  card.appendChild(el("p", { class:"pricing-card__note", text:tier.note }));
+  var btn = el("button", { class:"btn btn--full pricing-card__cta", text:"Add to order", attrs:{type:"button"},
+    on:{ click:function(){
+      addToCart({ category:cat.name, name:tier.name, price:tier.price });
+      btn.textContent = "Added ✓";
+      setTimeout(function(){ btn.textContent = "Add to order"; }, 1400);
+    } } });
+  card.appendChild(btn);
+  return card;
+}
+
+function buildBundleCard(cat, bundle){
+  var card = el("div", { class:"pricing-card is-popular" });
+  card.appendChild(el("span", { class:"pricing-card__badge", text:"💰 Save " + fmt(bundle.save) }));
+  card.appendChild(el("span", { class:"pricing-card__icon", text:"🎁" }));
+  card.appendChild(el("h3", { class:"pricing-card__name", text:bundle.name }));
+  card.appendChild(el("p", { class:"pricing-card__tagline", text:bundle.note }));
+  var priceRow = el("div", { class:"pricing-card__price" });
+  priceRow.appendChild(el("span", { class:"pricing-card__strike", text:fmt(bundle.originalPrice) }));
+  priceRow.appendChild(document.createTextNode(fmt(bundle.price)));
+  card.appendChild(priceRow);
+  var feat = el("ul", { class:"pricing-card__features" });
+  bundle.includes.forEach(function(f){ feat.appendChild(el("li", { text:f })); });
+  card.appendChild(feat);
+  var btn = el("button", { class:"btn btn--full pricing-card__cta", text:"Add bundle to order", attrs:{type:"button"},
+    on:{ click:function(){
+      addToCart({ category:cat.name, name:bundle.name, price:bundle.price });
+      btn.textContent = "Added ✓";
+      setTimeout(function(){ btn.textContent = "Add bundle to order"; }, 1400);
+    } } });
+  card.appendChild(btn);
+  return card;
+}
+
+/* ---------------- HOME CATEGORY GRID ---------------- */
+function renderCatGrid(){
+  var grid = document.getElementById("catGrid");
+  CATALOG.forEach(function(cat){
+    var minPrice = Math.min.apply(null, cat.tiers.map(function(t){ return t.price; }));
+    var card = el("button", { class:"cat-card", attrs:{type:"button"}, on:{ click:function(){ openCategory(cat.slug); } } });
+    card.appendChild(el("span", { class:"cat-card__icon", text:cat.icon }));
+    card.appendChild(el("div", { class:"cat-card__name", text:cat.name }));
+    card.appendChild(el("div", { class:"cat-card__slogan", text:cat.slogan }));
+    card.appendChild(el("div", { class:"cat-card__from", text:"From " + fmt(minPrice) }));
+    grid.appendChild(card);
+  });
+}
+
+/* ---------------- CART ---------------- */
+function addToCart(item){
+  item.id = Date.now() + Math.random();
+  cart.push(item);
+  updateCartBadge();
+  showToast("Added to cart: " + item.name);
+}
+function removeFromCart(id){
+  cart = cart.filter(function(i){ return i.id !== id; });
+  updateCartBadge();
+  renderCart();
+}
+function cartTotal(){ return cart.reduce(function(sum,i){ return sum + i.price; }, 0); }
+function updateCartBadge(){
+  var badge = document.getElementById("cartBadge");
+  if(cart.length){ badge.hidden = false; badge.textContent = cart.length; }
+  else { badge.hidden = true; }
+}
+function renderCart(){
+  var wrap = document.getElementById("cartItemsWrap");
+  wrap.innerHTML = "";
+  var totalRow = document.getElementById("cartTotalRow");
+  var formWrap = document.getElementById("cartFormWrap");
+  var actions = document.getElementById("cartActions");
+
+  if(!cart.length){
+    wrap.appendChild(el("div", { class:"cart-empty", text:"Your cart is empty — browse services on the home page to add something." }));
+    totalRow.hidden = true; formWrap.hidden = true; actions.hidden = true;
+    return;
+  }
+  var list = el("div", { class:"cart-list" });
+  cart.forEach(function(item){
+    var info = el("div", { class:"cart-row__info" }, [
+      el("span", { class:"cart-row__name", text:item.name }),
+      el("span", { class:"cart-row__meta", text:item.category })
+    ]);
+    var right = el("div", { class:"cart-row__right" }, [
+      el("span", { class:"cart-row__price", text:fmt(item.price) }),
+      el("button", { class:"cart-row__remove", text:"✕", attrs:{type:"button","aria-label":"Remove"}, on:{ click:function(){ removeFromCart(item.id); } } })
+    ]);
+    list.appendChild(el("div", { class:"cart-row" }, [info, right]));
+  });
+  wrap.appendChild(list);
+  totalRow.hidden = false;
+  document.getElementById("cartTotalAmount").textContent = fmt(cartTotal());
+  formWrap.hidden = false;
+  actions.hidden = false;
+
+  if(currentUser){
+    document.getElementById("custName").value = currentUser.name;
+    document.getElementById("custContact").value = currentUser.contact;
+  }
+}
+
+document.getElementById("cartButton").addEventListener("click", function(){
+  renderCart();
+  showPage("cart");
+  location.hash = "cart";
+});
+document.getElementById("clearCartBtn").addEventListener("click", function(){
+  cart = [];
+  updateCartBadge();
+  renderCart();
+});
+document.getElementById("sendOrderBtn").addEventListener("click", function(){
+  if(!cart.length) return;
+  var name = document.getElementById("custName").value.trim() || "Not provided";
+  var contact = document.getElementById("custContact").value.trim() || "Not provided";
+  var notes = document.getElementById("custNotes").value.trim() || "None";
+  var lines = ["New order request via Crusiva website", "", "Items:"];
+  cart.forEach(function(i){ lines.push("- " + i.name + " (" + i.category + ") — " + fmt(i.price)); });
+  lines.push("", "Total: " + fmt(cartTotal()), "", "Customer name: " + name, "Contact: " + contact, "Notes: " + notes);
+  var body = encodeURIComponent(lines.join("\n"));
+  window.location.href = "mailto:rishavchauhan1912@gmail.com?subject=" + encodeURIComponent("New order request — Crusiva") + "&body=" + body;
+});
+
+/* ---------------- TOAST ---------------- */
+var toastTimer = null;
+function showToast(msg){
+  var t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("is-visible");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove("is-visible"); }, 2200);
+}
+
+/* ---------------- LOGIN (session-only, no real account) ---------------- */
+var loginOverlay = document.getElementById("loginOverlay");
+document.getElementById("signInButton").addEventListener("click", function(){ loginOverlay.classList.add("is-open"); });
+document.getElementById("loginClose").addEventListener("click", function(){ loginOverlay.classList.remove("is-open"); });
+loginOverlay.addEventListener("click", function(e){ if(e.target === loginOverlay) loginOverlay.classList.remove("is-open"); });
+document.getElementById("loginSubmit").addEventListener("click", function(){
+  var name = document.getElementById("loginName").value.trim();
+  var contact = document.getElementById("loginEmail").value.trim();
+  if(!name){ document.getElementById("loginName").focus(); return; }
+  currentUser = { name:name, contact:contact };
+  loginOverlay.classList.remove("is-open");
+  document.getElementById("signInButton").hidden = true;
+  var chip = document.getElementById("userChip");
+  chip.hidden = false;
+  document.getElementById("userChipName").textContent = "Hi, " + name.split(" ")[0];
+  showToast("Signed in as " + name);
+});
+document.getElementById("signOutButton").addEventListener("click", function(){
+  currentUser = null;
+  document.getElementById("userChip").hidden = true;
+  document.getElementById("signInButton").hidden = false;
+});
+
+/* ---------------- CHAT WIDGET ---------------- */
+var chatPanel = document.getElementById("chatPanel");
+var chatLog = document.getElementById("chatLog");
+var chatHistoryText = [];
+
+function chatAppend(role, text){
+  chatLog.appendChild(el("div", { class:"chat-msg chat-msg--" + role, text:text }));
+  chatLog.scrollTop = chatLog.scrollHeight;
+  chatHistoryText.push((role === "bot" ? "Crusiva: " : "Visitor: ") + text);
+}
+function botReply(question){
+  var q = question.toLowerCase();
+  if(q.indexOf("price") > -1 || q.indexOf("cost") > -1 || q.indexOf("charge") > -1){
+    return "Every service has its own pricing page — tap a service on the home screen and you will see every tier and price. Tell me which service and I can point you there.";
+  }
+  if(q.indexOf("website") > -1 || q.indexOf("web") > -1){
+    return "Website pricing depends on how many pages you need — 1 page, 2 to 4, 5 to 7, or 8 to 10. Check the Website service page for exact pricing.";
+  }
+  if(q.indexOf("thumbnail") > -1){
+    return "Thumbnails start at a Basic tier and go up to an Advanced tier, plus a combo with an Advanced edit. Check the Thumbnails service page for details.";
+  }
+  if(q.indexOf("ai") > -1 && (q.indexOf("photo") > -1 || q.indexOf("image") > -1)){
+    return "AI-generated images have three tiers based on variations and use rights. Check the AI-Generated Photo service page for pricing.";
+  }
+  if(q.indexOf("ai") > -1 && q.indexOf("video") > -1){
+    return "AI-generated videos are priced by length — 10 to 20 seconds, 30 to 40 seconds, or 1 to 2 minutes. Check the AI-Generated Video service page.";
+  }
+  if(q.indexOf("funny") > -1){
+    return "Funny moments edits are priced by length — short, premium short, or long-form. Check the Funny Moments service page for pricing.";
+  }
+  if(q.indexOf("order") > -1 || q.indexOf("buy") > -1 || q.indexOf("purchase") > -1){
+    return "Add whatever you want to your cart from any service page, then open the cart and hit Send order request — it goes straight to Crusiva by email.";
+  }
+  if(q.indexOf("time") > -1 || q.indexOf("long") > -1 || q.indexOf("deliver") > -1 || q.indexOf("turnaround") > -1 || q.indexOf("refund") > -1 || q.indexOf("pay") > -1){
+    return "That is best answered directly by the team for your specific project. Want me to send this question to Crusiva by email? Use the link at the bottom of this chat.";
+  }
+  return "Good question — I will flag this for the Crusiva team. You can also email rishavchauhan1912@gmail.com any time, or use the email link below to send this chat.";
+}
+function updateChatEmailLink(){
+  var link = document.getElementById("chatEmailLink");
+  var body = encodeURIComponent(chatHistoryText.join("\n") || "No messages yet.");
+  link.href = "mailto:rishavchauhan1912@gmail.com?subject=" + encodeURIComponent("Question from Crusiva website chat") + "&body=" + body;
+}
+
+document.getElementById("chatToggle").addEventListener("click", function(){
+  chatPanel.classList.toggle("is-open");
+});
+document.getElementById("chatClose").addEventListener("click", function(){ chatPanel.classList.remove("is-open"); });
+
+var chips = ["What services do you offer?","How does pricing work?","How do I place an order?","Can I see sample work?"];
+var chipsWrap = document.getElementById("chatChips");
+chips.forEach(function(c){
+  chipsWrap.appendChild(el("button", { class:"chat-chip", text:c, attrs:{type:"button"}, on:{ click:function(){
+    chatAppend("user", c);
+    chatAppend("bot", botReply(c));
+    updateChatEmailLink();
+  } } }));
+});
+
+function sendChat(){
+  var input = document.getElementById("chatInput");
+  var val = input.value.trim();
+  if(!val) return;
+  chatAppend("user", val);
+  chatAppend("bot", botReply(val));
+  updateChatEmailLink();
+  input.value = "";
+}
+document.getElementById("chatSend").addEventListener("click", sendChat);
+document.getElementById("chatInput").addEventListener("keydown", function(e){ if(e.key === "Enter") sendChat(); });
+
+chatAppend("bot", "Hey! I am the Crusiva assistant. Ask me about services, pricing, or how ordering works.");
+updateChatEmailLink();
+
+/* ---------------- INTRO / RENDER BAR ---------------- */
+(function(){
+  var intro = document.getElementById("intro");
+  if(!intro) return;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduce){ intro.remove(); return; }
+  var fill = document.getElementById("introFill");
+  var pct = document.getElementById("introPct");
+  var duration = 1100;
+  var start = performance.now();
+  var done = false;
+  function finish(){
+    if(done) return;
+    done = true;
+    intro.classList.add("intro--done");
+    setTimeout(function(){ if(intro.parentNode) intro.remove(); }, 550);
+  }
+  function tick(now){
+    var elapsed = now - start;
+    var p = Math.min(100, Math.round((elapsed/duration)*100));
+    fill.style.width = p + "%";
+    pct.textContent = p + "%";
+    if(elapsed < duration){ requestAnimationFrame(tick); } else { finish(); }
+  }
+  requestAnimationFrame(tick);
+  setTimeout(finish, duration + 500);
+  intro.addEventListener("click", finish);
+})();
+
+/* ---------------- HEADER SCROLL ---------------- */
+var header = document.getElementById("siteHeader");
+window.addEventListener("scroll", function(){ header.classList.toggle("is-scrolled", window.scrollY > 20); }, { passive:true });
+
+/* ---------------- MOBILE NAV ---------------- */
+var navToggle = document.getElementById("navToggle");
+var navMenu = document.getElementById("navMenu");
+function closeMobileMenu(){ navMenu.classList.remove("is-open"); navToggle.setAttribute("aria-expanded","false"); }
+navToggle.addEventListener("click", function(){
+  var open = navMenu.classList.toggle("is-open");
+  navToggle.setAttribute("aria-expanded", open);
+});
+
+/* ---------------- NAV LINK WIRING ---------------- */
+document.querySelectorAll("[data-anchor]").forEach(function(a){
+  a.addEventListener("click", function(e){ e.preventDefault(); goAnchor(a.getAttribute("data-anchor")); });
+});
+document.querySelectorAll("[data-nav='home']").forEach(function(a){
+  a.addEventListener("click", function(e){ e.preventDefault(); showPage("home"); location.hash = "home"; });
+});
+
+/* ---------------- PROCESS TIMELINE ---------------- */
+var steps = document.querySelectorAll(".timeline__step");
+var tFill = document.getElementById("timelineFill");
+var playhead = document.getElementById("timelinePlayhead");
+var panelTitle = document.getElementById("timelinePanelTitle");
+var panelDesc = document.getElementById("timelinePanelDesc");
+function setActiveStep(i){
+  steps.forEach(function(s, idx){
+    var active = idx === i;
+    s.classList.toggle("is-active", active);
+    s.setAttribute("aria-pressed", active);
+  });
+  var pct2 = (i/(steps.length-1)) * 100;
+  tFill.style.width = pct2 + "%";
+  playhead.style.left = pct2 + "%";
+  panelTitle.textContent = steps[i].dataset.title;
+  panelDesc.textContent = steps[i].dataset.desc;
+}
+steps.forEach(function(s, idx){ s.addEventListener("click", function(){ setActiveStep(idx); }); });
+if(steps.length) setActiveStep(0);
+
+/* ---------------- REVEAL ON SCROLL ---------------- */
+var revealEls = document.querySelectorAll(".reveal");
+if("IntersectionObserver" in window){
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){ entry.target.classList.add("is-visible"); obs.unobserve(entry.target); }
+    });
+  }, { threshold:0.15 });
+  revealEls.forEach(function(elx){ obs.observe(elx); });
+} else {
+  revealEls.forEach(function(elx){ elx.classList.add("is-visible"); });
+}
+
+/* ---------------- INIT ---------------- */
+renderCatGrid();
+document.getElementById("year").textContent = new Date().getFullYear();
+
+(function initRoute(){
+  var hash = location.hash.replace("#","");
+  var cat = CATALOG.filter(function(c){ return c.slug === hash; })[0];
+  if(cat){ openCategory(cat.slug); }
+  else if(hash === "cart"){ renderCart(); showPage("cart"); }
+})();
+</script>
+
+</body>
+</html>
